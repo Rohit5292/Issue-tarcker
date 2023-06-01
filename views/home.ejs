@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .button-container button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .button-container button:hover {
+            background-color: #45a049;
+        }
+        
+        .project-list {
+            list-style-type: none;
+            padding: 0;
+        
+        }
+        
+        .project-list li {
+            margin-bottom: 10px;
+            border: 1px solid black; 
+            
+        }
+    </style>
+</head>
+<body>
+    <h1>Home Page</h1>
+    
+    <div class="container">
+        <h2>Projects</h2>
+        
+        <div class="button-container">
+            <button>
+                <a href="/create-project" style="text-decoration: none; color: white;">Create project</a>
+            </button>
+        </div>
+        
+        <div>
+            <ol class="project-list">
+                <% for (let i = 0; i < projects.length; i++) { %>
+                    <li><%= projects[i].name %>
+                        <button><a href="/<%= projects[i]._id %>/projectDetails">Create Issue</a></button>
+                    </li>
+                <% } %>
+                
+            </ol>
+        </div>
+    </div>
+</body>
+</html>

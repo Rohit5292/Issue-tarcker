@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        
+        .filter-container {
+            margin-bottom: 20px;
+        }
+        
+        .filter-container label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .issue-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .issue-list li {
+            margin-bottom: 10px;
+            border: 1px solid black; 
+            padding: 10px;
+        }
+        
+        .issue-list li .title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .issue-list li .description {
+            margin-bottom: 5px;
+        }
+        
+        .issue-list li .metadata {
+            font-style: italic;
+            color: gray;
+        }
+        
+        .create-issue-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .create-issue-container button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .create-issue-container button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Project Details</h1>
+    
+    <div class="container">
+        <div class="filter-container">
+            <label for="labels">Filter by Labels:</label>
+            <select id="labels" multiple>
+                <option value="">All Labels</option>
+                <option value="bug">Bug</option>
+                <option value="documentation">Documentation</option>
+                <option value="duplicate">Duplicate</option>
+                <option value="enhancement">Enhancement</option>
+                <option value="good-first-issue">Good First Issue</option>
+                <option value="help-wanted">Help Wanted</option>
+            </select>
+            <label for="author">Filter by Author:</label>
+            <input type="text" id="author" placeholder="Author">
+            <button onclick="applyFilters()">Apply Filters</button>
+        </div>
+        
+        <div>
+            <input type="text" id="search" placeholder="Search by Title or Description">
+            <button onclick="searchIssues()">Search</button>
+        </div>
+        
+        <h2>Bugs</h2>
+        <ul id="issueList" class="issue-list">
+            <% issue.forEach(function(issue) { %>
+              <li>
+                <h3 class="title"><%= issue.title %></h3>
+                <p class="description"><%= issue.description %></p>
+                <p class="metadata">Labels: <%= issue.labels.join(', ') %></p>
+                <p class="metadata">Author: <%= issue.author %></p>
+              </li>
+            <% }); %>
+        </ul>
+        
+        <div class="create-issue-container">
+            <a href="/<%= projects._id %>/issue">Create Issue</a>
+        </div>
+    </div>
+
+    <script>
+        function applyFilters() {
+            var labelsSelect = document.getElementById('labels');
+            var selectedLabels = Array.from(labelsSelect.selectedOptions).map(option => option.value);
+            
+            var authorInput = document.getElementById('author');
+            var author = authorInput.value.trim();
+            
+            var issueList = document.getElementById('issueList');
+            var issues = issueList.getElementsByTagName('li');
+            
+            for (var i = 0; i < issues.length; i++) {
+                var issue = issues[i];
+                var issueLabels = issue.getElementsByClassName('metadata')[0].innerText.split(': ')[1];
+                var issueAuthor = issue.getElementsByClassName('metadata')[1].innerText.split(': ')[1];
+                
+                if (
+                    (selectedLabels.length === 0 || selectedLabels.every(label => issueLabels.includes(label))) &&
+                    (author === '' || issueAuthor.toLowerCase().includes(author.toLowerCase()))
+                ) {
+                    issue.style.display = 'block';
+                } else {
+                    issue.style.display = 'none';
+                }
+            }
+        }
+        
+        function searchIssues() {
+            var searchInput = document.getElementById('search');
+            var searchQuery = searchInput.value.trim().toLowerCase();
+            
+            var issueList = document.getElementById('issueList');
+            var issues = issueList.getElementsByTagName('li');
+            
+            for (var i = 0; i < issues.length; i++) {
+                var issue = issues[i];
+                var issueTitle = issue.getElementsByClassName('title')[0].innerText.toLowerCase();
+                var issueDescription = issue.getElementsByClassName('description')[0].innerText.toLowerCase();
+                
+                if (issueTitle.includes(searchQuery) || issueDescription.includes(searchQuery)) {
+                    issue.style.display = 'block';
+                } else {
+                    issue.style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

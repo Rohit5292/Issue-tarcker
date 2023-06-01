@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Project</title>
+<link rel="stylesheet" href="../assets/createProject.css">
+</head>
+<body>
+  <form action="/create" method="post" id="create-project-form">
+    <div class="form-group">
+      <label for="project-name">Name:</label>
+      <input type="text" id="project-name" name="name" required>
+    </div>
+    <div class="form-group">
+      <label for="project-description">Description:</label>
+      <textarea id="project-description" name="description" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="project-author">Author:</label>
+      <input type="text" id="project-author" name="author" required>
+    </div>
+    <button type="submit">Create Project</button>
+  </form>
+  
+</body>
+</html>
